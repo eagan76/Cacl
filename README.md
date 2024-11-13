@@ -56,11 +56,10 @@ This is a simple scientific calculator I created to help with my coding and math
   brew install git
   ```
 
-- **Windows**:
+-------------------------------
+###Installation
+-------------------------------
 
-  - Download and install Git from [git-scm.com](https://git-scm.com/download/win).
-
-### Installation Steps
 
 1. **Clone the Repository**:
 
