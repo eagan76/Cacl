@@ -58,7 +58,7 @@ This is a simple scientific calculator I created to help with my coding and math
 
 ============================
 
-*Installation*
+__*Installation*__
 
 ============================
 
