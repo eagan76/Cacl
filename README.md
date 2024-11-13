@@ -11,7 +11,7 @@ This is a simple scientific calculator I created to help with my coding and math
   - Curved corners and a two-pixel white border around the calculator.
   - Input expression displayed at the top, with the result shown below after pressing `=`, separated by a line.
 
-## Installation
+## Git installation
 
 ### Prerequisites
 
@@ -57,8 +57,9 @@ This is a simple scientific calculator I created to help with my coding and math
   ```
 
 -------------------------------
+-
 Installation
--------------------------------
+-
 -------------------------------
 
 
