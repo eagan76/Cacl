@@ -66,7 +66,7 @@ __*Installation*__
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/yourusername/ezcacl.git
+   git clone https://github.com/eagan76/ezcacl.git
    ```
 
 2. **Navigate to the Directory**:
