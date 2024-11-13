@@ -56,11 +56,11 @@ This is a simple scientific calculator I created to help with my coding and math
   brew install git
   ```
 
--------------------------------
--
+================================
+
 Installation
--
--------------------------------
+
+================================
 
 
 1. **Clone the Repository**:
