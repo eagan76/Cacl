@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Ezcalc</title>
     <style>
-        /* Default calculator container background (without gradient) */
+        /* Body styling */
         body {
             display: flex;
             justify-content: center;
@@ -19,6 +19,7 @@
             background: linear-gradient(to bottom right, #d3d3d3, #000000);
         }
 
+        /* Calculator container */
         .calculator {
             background-color: #3d3d3d;
             border: 2px solid white;
@@ -28,14 +29,29 @@
             box-sizing: border-box;
         }
 
-        /* Label styling */
-        .calculator-label {
-            color: white;
-            font-size: 18px;
-            text-align: center;
+        /* Title and scientific toggle button container */
+        .title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 5px;
         }
 
+        .calculator-label {
+            color: white;
+            font-size: 18px;
+        }
+
+        .toggle-sci {
+            background-color: #555555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        /* Screen display */
         .calculator-screen {
             background-color: #4d4d4d;
             color: white;
@@ -44,10 +60,10 @@
             padding: 10px;
             border-radius: 10px;
             margin-bottom: 5px;
-            overflow: hidden;
             height: 40px;
         }
 
+        /* Result display */
         .calculator-result {
             background-color: #4d4d4d;
             color: white;
@@ -56,7 +72,6 @@
             padding: 10px;
             border-radius: 10px;
             margin-top: 5px;
-            overflow: hidden;
             height: 40px;
         }
 
@@ -65,16 +80,12 @@
             margin: 5px 0;
         }
 
+        /* Button styling */
         .calculator-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-gap: 10px;
             margin-top: 10px;
-        }
-
-        .scientific-buttons {
-            margin-top: 10px;
-            display: none;
         }
 
         .btn {
@@ -95,17 +106,9 @@
             background-color: #555555;
         }
 
-        .operator:hover {
-            background-color: #6d6d6d;
-        }
-
         .equals {
             grid-column: span 2;
             background-color: #777777;
-        }
-
-        .equals:hover {
-            background-color: #8d8d8d;
         }
 
         /* Footer styling */
@@ -119,13 +122,16 @@
 </head>
 <body>
     <div class="calculator" id="calculator">
-        <!-- Calculator Label -->
-        <div class="calculator-label">Ezcalc</div>
+        <!-- Title and Toggle -->
+        <div class="title-bar">
+            <div class="calculator-label">Ezcalc</div>
+            <button class="toggle-sci" id="toggle-scientific">Sci</button>
+        </div>
 
-        <!-- Input Expression Display -->
+        <!-- Display -->
         <div class="calculator-screen" id="calculator-screen">0</div>
 
-        <!-- Divider Line -->
+        <!-- Divider -->
         <div class="divider" id="divider" style="display: none;"></div>
 
         <!-- Result Display -->
@@ -133,45 +139,41 @@
 
         <!-- Buttons -->
         <div class="calculator-buttons">
-            <!-- Row 1 -->
             <button class="btn" data-action="clear">C</button>
             <button class="btn" data-action="backspace">←</button>
-            <button class="btn" data-action="toggle-sign">±</button> <!-- New button for toggling positive/negative -->
+            <button class="btn" data-action="toggle-sign">±</button>
             <button class="btn operator" data-value="/">÷</button>
-            <!-- Row 2 -->
+
             <button class="btn" data-value="7">7</button>
             <button class="btn" data-value="8">8</button>
             <button class="btn" data-value="9">9</button>
             <button class="btn operator" data-value="*">×</button>
-            <!-- Row 3 -->
+
             <button class="btn" data-value="4">4</button>
             <button class="btn" data-value="5">5</button>
             <button class="btn" data-value="6">6</button>
             <button class="btn operator" data-value="-">−</button>
-            <!-- Row 4 -->
+
             <button class="btn" data-value="1">1</button>
             <button class="btn" data-value="2">2</button>
             <button class="btn" data-value="3">3</button>
             <button class="btn operator" data-value="+">+</button>
-            <!-- Row 5 -->
+
             <button class="btn" data-value="0">0</button>
             <button class="btn" data-value=".">.</button>
             <button class="btn equals" data-action="calculate">=</button>
         </div>
 
         <!-- Scientific Buttons -->
-        <div class="calculator-buttons scientific-buttons" id="scientific-buttons">
-            <!-- Row 1 -->
+        <div class="calculator-buttons scientific-buttons" id="scientific-buttons" style="display: none;">
             <button class="btn" data-value="(">(</button>
             <button class="btn" data-value=")">)</button>
             <button class="btn" data-value="^">^</button>
             <button class="btn" data-value="√">√</button>
-            <!-- Row 2 -->
             <button class="btn" data-value="sin(">sin</button>
             <button class="btn" data-value="cos(">cos</button>
             <button class="btn" data-value="tan(">tan</button>
             <button class="btn" data-value="ln(">ln</button>
-            <!-- Row 3 -->
             <button class="btn" data-value="log10(">log</button>
             <button class="btn" data-value="exp(">exp</button>
             <button class="btn" data-value="PI">π</button>
@@ -181,10 +183,10 @@
         <!-- Footer -->
         <div class="calculator-footer">Built by Bananapeppersz/eagan76</div>
     </div>
+
     <script>
-        // JavaScript for setting the background conditionally
+        // Apply gradient background when viewed directly in a browser
         if (window.self === window.top) {
-            // Apply gradient background only when viewed directly in a browser
             document.body.classList.add('full-screen');
         }
 
@@ -198,19 +200,13 @@
         let currentInput = '';
         let isScientificMode = false;
 
-        // Toggle Scientific Mode
+        // Toggle scientific mode
         toggleScientificBtn.addEventListener('click', () => {
             isScientificMode = !isScientificMode;
-            if (isScientificMode) {
-                scientificButtons.style.display = 'grid';
-                toggleScientificBtn.textContent = 'Basic';
-            } else {
-                scientificButtons.style.display = 'none';
-                toggleScientificBtn.textContent = 'Sci';
-            }
+            scientificButtons.style.display = isScientificMode ? 'grid' : 'none';
+            toggleScientificBtn.textContent = isScientificMode ? 'Basic' : 'Sci';
         });
 
-        // Button Click Event
         buttons.forEach(button => {
             button.addEventListener('click', () => {
                 const action = button.dataset.action;
@@ -242,11 +238,10 @@
 
         function toggleSign() {
             if (currentInput) {
-                // Toggle between positive and negative by adding/removing "-" at the start
                 if (currentInput.startsWith('-')) {
-                    currentInput = currentInput.slice(1); // Remove the "-"
+                    currentInput = currentInput.slice(1);
                 } else {
-                    currentInput = '-' + currentInput; // Add the "-"
+                    currentInput = '-' + currentInput;
                 }
                 calculatorScreen.textContent = currentInput;
             }
@@ -254,12 +249,6 @@
 
         function calculateResult() {
             try {
-                // Ensure numbers are treated as positive unless explicitly negative
-                if (!currentInput.startsWith('-')) {
-                    currentInput = currentInput.replace(/^\+?/, '');
-                }
-
-                // Replace custom operators with JavaScript equivalents
                 let expression = currentInput
                     .replace(/÷/g, '/')
                     .replace(/×/g, '*')
@@ -275,15 +264,12 @@
                     .replace(/exp\(/g, 'Math.exp(')
                     .replace(/\^/g, '**');
 
-                // Evaluate the expression
                 let result = eval(expression);
 
-                // Handle undefined or infinite results
                 if (!isFinite(result)) {
                     throw new Error('Result is not finite');
                 }
 
-                // Round result to 10 decimal places
                 result = Math.round(result * 1e10) / 1e10;
 
                 calculatorResult.textContent = result;
