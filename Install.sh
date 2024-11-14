@@ -1,50 +1,32 @@
-#!/bin/zsh
+# Check for Python3 installation
+if ! command -v python3 &> /dev/null
+then
+    echo "Python3 is not installed. Please install Python3."
+    exit
+fi
 
-# Installation script for the Scientific Calculator
+# Install required Python packages
+python3 -m pip install --user pyinstaller tk
 
-# Variables
-INSTALL_DIR="$HOME/.local/share/ezcacl"
-EXECUTABLE_DIR="$HOME/.local/bin"
-EXECUTABLE="$EXECUTABLE_DIR/cacl"
+# Create executable with PyInstaller
+pyinstaller --onefile --windowed calculator.py
 
-# Function to create necessary directories
-create_directories() {
-    mkdir -p "$INSTALL_DIR"
-    mkdir -p "$EXECUTABLE_DIR"
-}
+# Move the executable to local bin for easy access
+if [ ! -d "$HOME/.local/bin" ]; then
+  mkdir -p "$HOME/.local/bin"
+fi
+mv dist/calculator "$HOME/.local/bin/ezcalc"
 
-# Function to copy the calculator file
-copy_calculator() {
-    cp "cacl.html" "$INSTALL_DIR/cacl.html"
-}
+# Create desktop shortcut for Linux
+echo "[Desktop Entry]
+Type=Application
+Name=Ezcalc
+Exec=$HOME/.local/bin/ezcalc
+Icon=utilities-calculator
+Terminal=false" > "$HOME/Desktop/Ezcalc.desktop"
 
-# Function to create executable script
-create_executable() {
-    cat > "$EXECUTABLE" <<EOL
-#!/bin/sh
-xdg-open "$INSTALL_DIR/cacl.html"
-EOL
-    chmod +x "$EXECUTABLE"
-}
+# Set permissions and make the shortcut executable
+chmod +x "$HOME/Desktop/Ezcalc.desktop"
 
-# Function to update PATH if necessary
-update_path() {
-    if [[ ":$PATH:" != *":$EXECUTABLE_DIR:"* ]]; then
-        echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.zshrc"
-        export PATH="$PATH:$HOME/.local/bin"
-        echo "Added $EXECUTABLE_DIR to PATH in .zshrc"
-    fi
-}
-
-# Main installation function
-install_calculator() {
-    create_directories
-    copy_calculator
-    create_executable
-    update_path
-    echo "Installation complete."
-    echo "You can launch the calculator by typing 'cacl' in the terminal."
-}
-
-# Run the installation
-install_calculator
+echo "Installation complete. You can launch Ezcalc from the desktop shortcut or by typing 'ezcalc' in the terminal."
+	
