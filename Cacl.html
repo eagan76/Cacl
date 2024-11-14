@@ -2,16 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Scientific Calculator</title>
+    <title>Ezcalc</title>
     <style>
+        /* Default calculator container background (without gradient) */
         body {
-            background-color: #2e2e2e;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            background-color: #2e2e2e;
         }
+
+        /* Gradient background for full-screen browser view */
+        body.full-screen {
+            background: linear-gradient(to bottom right, #d3d3d3, #000000);
+        }
+
         .calculator {
             background-color: #3d3d3d;
             border: 2px solid white;
@@ -20,6 +27,15 @@
             width: 320px;
             box-sizing: border-box;
         }
+
+        /* Label styling */
+        .calculator-label {
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
         .calculator-screen {
             background-color: #4d4d4d;
             color: white;
@@ -31,6 +47,7 @@
             overflow: hidden;
             height: 40px;
         }
+
         .calculator-result {
             background-color: #4d4d4d;
             color: white;
@@ -42,20 +59,24 @@
             overflow: hidden;
             height: 40px;
         }
+
         .divider {
             border-bottom: 1px solid white;
             margin: 5px 0;
         }
+
         .calculator-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-gap: 10px;
             margin-top: 10px;
         }
+
         .scientific-buttons {
             margin-top: 10px;
             display: none;
         }
+
         .btn {
             background-color: #666666;
             color: white;
@@ -65,26 +86,42 @@
             border-radius: 10px;
             cursor: pointer;
         }
+
         .btn:hover {
             background-color: #7d7d7d;
         }
+
         .operator {
             background-color: #555555;
         }
+
         .operator:hover {
             background-color: #6d6d6d;
         }
+
         .equals {
             grid-column: span 2;
             background-color: #777777;
         }
+
         .equals:hover {
             background-color: #8d8d8d;
+        }
+
+        /* Footer styling */
+        .calculator-footer {
+            color: #cccccc;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
     <div class="calculator" id="calculator">
+        <!-- Calculator Label -->
+        <div class="calculator-label">Ezcalc</div>
+
         <!-- Input Expression Display -->
         <div class="calculator-screen" id="calculator-screen">0</div>
 
@@ -121,6 +158,7 @@
             <button class="btn" data-value=".">.</button>
             <button class="btn equals" data-action="calculate">=</button>
         </div>
+
         <!-- Scientific Buttons -->
         <div class="calculator-buttons scientific-buttons" id="scientific-buttons">
             <!-- Row 1 -->
@@ -139,8 +177,17 @@
             <button class="btn" data-value="PI">π</button>
             <button class="btn" data-value="E">e</button>
         </div>
+
+        <!-- Footer -->
+        <div class="calculator-footer">Built by Bananapeppersz/eagan76</div>
     </div>
     <script>
+        // JavaScript for setting the background conditionally
+        if (window.self === window.top) {
+            // Apply gradient background only when viewed directly in a browser
+            document.body.classList.add('full-screen');
+        }
+
         const calculatorScreen = document.getElementById('calculator-screen');
         const calculatorResult = document.getElementById('calculator-result');
         const divider = document.getElementById('divider');
