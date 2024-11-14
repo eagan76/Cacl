@@ -136,7 +136,7 @@
             <!-- Row 1 -->
             <button class="btn" data-action="clear">C</button>
             <button class="btn" data-action="backspace">←</button>
-            <button class="btn" data-action="toggle-scientific" id="toggle-scientific">Sci</button>
+            <button class="btn" data-action="toggle-sign">±</button> <!-- New button for toggling positive/negative -->
             <button class="btn operator" data-value="/">÷</button>
             <!-- Row 2 -->
             <button class="btn" data-value="7">7</button>
@@ -222,8 +222,8 @@
                     clearAll();
                 } else if (action === 'backspace') {
                     backspace();
-                } else if (action === 'toggle-scientific') {
-                    // Handled separately
+                } else if (action === 'toggle-sign') {
+                    toggleSign();
                 } else {
                     appendValue(value);
                 }
@@ -240,8 +240,25 @@
             calculatorScreen.textContent = currentInput;
         }
 
+        function toggleSign() {
+            if (currentInput) {
+                // Toggle between positive and negative by adding/removing "-" at the start
+                if (currentInput.startsWith('-')) {
+                    currentInput = currentInput.slice(1); // Remove the "-"
+                } else {
+                    currentInput = '-' + currentInput; // Add the "-"
+                }
+                calculatorScreen.textContent = currentInput;
+            }
+        }
+
         function calculateResult() {
             try {
+                // Ensure numbers are treated as positive unless explicitly negative
+                if (!currentInput.startsWith('-')) {
+                    currentInput = currentInput.replace(/^\+?/, '');
+                }
+
                 // Replace custom operators with JavaScript equivalents
                 let expression = currentInput
                     .replace(/÷/g, '/')
